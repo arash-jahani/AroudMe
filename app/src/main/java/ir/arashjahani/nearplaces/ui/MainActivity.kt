@@ -1,7 +1,8 @@
-package ir.arashjahani.nearplaces
+package ir.arashjahani.nearplaces.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import ir.arashjahani.nearplaces.R
 
 class MainActivity : AppCompatActivity() {
 
