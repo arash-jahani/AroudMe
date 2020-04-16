@@ -10,7 +10,6 @@ data class Venue(
     val id: Long = 0,
 
     @SerializedName("id")
-	@ColumnInfo(name = "venue_id")
     val venueId: String? = null,
     val hasPerk: Boolean? = null,
     val referralId: String? = null,

@@ -12,6 +12,6 @@ import ir.arashjahani.nearplaces.data.model.Venue
 @Database(entities = arrayOf(Venue::class,CategoriesItem::class),version = 1)
 abstract class AppDatabase:RoomDatabase() {
 
-
+abstract fun venueDao():VenueDao
 
 }
