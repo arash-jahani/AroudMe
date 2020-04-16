@@ -3,6 +3,7 @@ package ir.arashjahani.nearplaces.di.module
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import ir.arashjahani.nearplaces.BuildConfig
 import ir.arashjahani.nearplaces.data.remote.ApiService
 import ir.arashjahani.nearplaces.utils.AppConstants
 import okhttp3.HttpUrl

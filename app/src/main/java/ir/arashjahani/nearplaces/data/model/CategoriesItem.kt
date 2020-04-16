@@ -1,30 +1,31 @@
 package ir.arashjahani.nearplaces.data.model
 
 import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
 import com.google.gson.annotations.SerializedName
 
-@Entity(
-    foreignKeys = [ForeignKey(
-        entity = Venue::class,
-        parentColumns = ["id"],
-        childColumns = ["v_id"],
-        onDelete = ForeignKey.CASCADE
-    )]
-)
+@Entity
 data class CategoriesItem(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    var id: Long? = null,
 
     @SerializedName("id")
-    val categoryId: String? = null,
-
-    @ColumnInfo(name = "v_id") // actually it is auto generated id in Venue.class
-    val venueId: Long? = null,
-    val pluralName: String? = null,
-    val name: String? = null,
+    var categoryId: String? = null,
+    var pluralName: String? = null,
+    var name: String? = null,
     @Embedded
-    val icon: Icon? = null,
-    val shortName: String? = null,
-    val primary: Boolean? = null
+    var icon: Icon? = null,
+    var shortName: String? = null,
+    var primary: Boolean? = null,
+
+
+    @ForeignKey
+        (
+        entity = Venue::class,
+        parentColumns = ["id"],
+        childColumns = ["venueId"],
+        onDelete = CASCADE
+    )
+    var venueId: Long? = null
 )

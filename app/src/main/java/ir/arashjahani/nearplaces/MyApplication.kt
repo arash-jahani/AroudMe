@@ -1,6 +1,7 @@
 package ir.arashjahani.nearplaces
 
 import android.app.Application
+import ir.arashjahani.nearplaces.di.DaggerApplicationComponent
 
 /**
  * Created By ArashJahani on 2020/04/14

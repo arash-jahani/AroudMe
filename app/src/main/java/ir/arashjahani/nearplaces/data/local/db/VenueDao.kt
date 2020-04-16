@@ -1,9 +1,7 @@
 package ir.arashjahani.nearplaces.data.local.db
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
+import ir.arashjahani.nearplaces.data.model.VenueItem
 import ir.arashjahani.nearplaces.data.model.Venue
 
 /**
@@ -13,9 +11,10 @@ import ir.arashjahani.nearplaces.data.model.Venue
 interface VenueDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveVenues(venues:List<VenueDao>)
+    fun saveVenues(venues:List<Venue>)
 
+    @Transaction
     @Query("SELECT * from venue")
-    fun getVeues():List<Venue>
+    fun getVeues():List<VenueItem>
 
 }

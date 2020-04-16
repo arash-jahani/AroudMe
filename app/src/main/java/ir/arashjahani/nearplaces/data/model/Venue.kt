@@ -2,22 +2,24 @@ package ir.arashjahani.nearplaces.data.model
 
 import androidx.room.*
 import com.google.gson.annotations.SerializedName
+import ir.arashjahani.nearplaces.data.model.CategoriesItem
+import ir.arashjahani.nearplaces.data.model.Location
 
 @Entity
-data class Venue(
+internal data class Venue(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    var id: Long? = null,
 
     @SerializedName("id")
-    val venueId: String? = null,
-    val hasPerk: Boolean? = null,
-    val referralId: String? = null,
-    val name: String? = null,
+    var venueId: String? = null,
+    var hasPerk: Boolean? = null,
+    var referralId: String? = null,
+    var name: String? = null,
 
-	@Embedded(prefix = "Loc_")
-    val location: Location? = null,
+    @Embedded(prefix = "Loc_")
+    var location: Location? = null,
 
-	@Relation(parentColumn = "id", entityColumn = "v_id", entity = CategoriesItem::class)
-    val categories: List<CategoriesItem?>? = null
+    @Ignore
+    var categories: List<CategoriesItem?>? = null
 )
