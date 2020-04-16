@@ -1,9 +1,6 @@
 package ir.arashjahani.nearplaces.data.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.google.gson.annotations.SerializedName
 
 @Entity
@@ -22,5 +19,6 @@ data class Venue(
 	@Embedded(prefix = "Loc_")
     val location: Location? = null,
 
+	@Relation(parentColumn = "id", entityColumn = "v_id", entity = CategoriesItem::class)
     val categories: List<CategoriesItem?>? = null
 )
