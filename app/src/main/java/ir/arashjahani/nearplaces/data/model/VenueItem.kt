@@ -13,6 +13,6 @@ class VenueItem (
     val venue: Venue,
 
     @Relation(parentColumn = "id", entityColumn = "venueId", entity = CategoriesItem::class)
-    val categories: List<CategoriesItem?>? = null
+    val categories: List<CategoriesItem>? = null
 
 )

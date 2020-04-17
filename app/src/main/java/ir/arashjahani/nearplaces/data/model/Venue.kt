@@ -21,5 +21,5 @@ data class Venue(
     var location: Location? = null,
 
     @Ignore
-    var categories: List<CategoriesItem?>? = null
+    var categories: List<CategoriesItem>? = null
 )
