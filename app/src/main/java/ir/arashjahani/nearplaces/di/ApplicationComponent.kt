@@ -10,6 +10,7 @@ import ir.arashjahani.nearplaces.di.builder.FragmentBuilder
 import ir.arashjahani.nearplaces.di.module.ApiModule
 import ir.arashjahani.nearplaces.di.module.ApplicationModule
 import ir.arashjahani.nearplaces.di.module.DatabaseModule
+import ir.arashjahani.nearplaces.di.module.ViewModelModule
 import javax.inject.Singleton
 
 /**
@@ -24,7 +25,8 @@ import javax.inject.Singleton
         DatabaseModule::class,
         AndroidSupportInjectionModule::class,
         ActivityBuilder::class,
-        FragmentBuilder::class]
+        FragmentBuilder::class,
+        ViewModelModule::class]
 )
 interface ApplicationComponent {
 
