@@ -6,6 +6,6 @@ package ir.arashjahani.nearplaces.data.model.api
 class ApiGeneralResponse<T>(
 
     val meta: Meta,
-    val response: Response<T>
+    val response: T
 
 )

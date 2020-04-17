@@ -6,7 +6,7 @@ import ir.arashjahani.nearplaces.data.model.CategoriesItem
 import ir.arashjahani.nearplaces.data.model.Location
 
 @Entity
-internal data class Venue(
+data class Venue(
 
     @PrimaryKey(autoGenerate = true)
     var id: Long? = null,
