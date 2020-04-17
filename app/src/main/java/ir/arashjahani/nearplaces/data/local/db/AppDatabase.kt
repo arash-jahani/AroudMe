@@ -9,11 +9,14 @@ import ir.arashjahani.nearplaces.data.model.Venue
  * Created By ArashJahani on 2020/04/16
  */
 
-@Database(entities = arrayOf(
-    Venue::class,
-    CategoriesItem::class),version = 1)
-abstract class AppDatabase:RoomDatabase() {
+@Database(
+    entities = arrayOf(
+        Venue::class,
+        CategoriesItem::class
+    ), version = 1, exportSchema = false
+)
+abstract class AppDatabase : RoomDatabase() {
 
-abstract fun venueDao():VenueDao
+    abstract fun venueDao(): VenueDao
 
 }
