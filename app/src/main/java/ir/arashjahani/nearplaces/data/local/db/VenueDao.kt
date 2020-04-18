@@ -21,7 +21,7 @@ abstract class VenueDao {
             }
             venues.add(venueItem.venue)
         }
-        _saveVenues(venues)
+         _saveVenues(venues)
     }
 
 //    public fun getAllVenues(): List<Venue> {

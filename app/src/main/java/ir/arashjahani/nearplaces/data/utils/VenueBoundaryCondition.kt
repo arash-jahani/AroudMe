@@ -62,7 +62,7 @@ class VenueBoundaryCondition(private val mApiService: ApiService, private val mV
 
                         if (it.size == 40) {
                             isRequestInProgress = false
-                            lastRequestPageNumber++;
+                            lastRequestPageNumber+=PAGE_SIZE;
                         }
                     }
 

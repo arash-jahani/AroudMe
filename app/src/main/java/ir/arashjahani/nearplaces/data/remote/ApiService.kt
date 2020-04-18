@@ -16,7 +16,8 @@ interface ApiService {
         @Query("ll") location: String,
         @Query("radius") radius: Int,
         @Query("limit") limit: Int,
-        @Query("offset") offset: Int
+        @Query("offset") offset: Int,
+        @Query("sortByDistance") sort: Int = 1
 
     ): Single<ApiGeneralResponse<VenuesResponse>>
 }
