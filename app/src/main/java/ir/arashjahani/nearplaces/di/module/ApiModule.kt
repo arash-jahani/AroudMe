@@ -37,9 +37,9 @@ class ApiModule {
                 var request: Request = chain.request()
                 val url: HttpUrl =
                     request.url().newBuilder()
-                        .addQueryParameter("client_id", "value")
-                        .addQueryParameter("client_secret", "value")
-                        .addQueryParameter("v", "value")
+                        .addQueryParameter("client_id", AppConstants.CLIENT_ID)
+                        .addQueryParameter("client_secret", AppConstants.CLIENT_SECRET)
+                        .addQueryParameter("v", AppConstants.VERSION)
                         .build()
                 request = request.newBuilder().url(url).build()
                 chain.proceed(request)
@@ -47,7 +47,7 @@ class ApiModule {
 
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
-            .addNetworkInterceptor(clientInterceptor)
+            .addInterceptor(clientInterceptor)
             .retryOnConnectionFailure(true)
             .readTimeout(15, TimeUnit.SECONDS)
             .connectTimeout(5, TimeUnit.SECONDS)

@@ -10,7 +10,7 @@ import java.lang.ref.WeakReference
  * Created By ArashJahani on 2020/04/17
  */
 
-open class BaseViewModel<N> constructor(val dataRepository: DataRepository): ViewModel() {
+open class BaseViewModel<N>: ViewModel() {
 
     protected var compositeDisposable = CompositeDisposable()
 

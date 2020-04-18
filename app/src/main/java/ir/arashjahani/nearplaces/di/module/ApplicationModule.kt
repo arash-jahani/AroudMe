@@ -5,6 +5,8 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import ir.arashjahani.nearplaces.MyApplication
+import ir.arashjahani.nearplaces.data.DataRepository
+import ir.arashjahani.nearplaces.data.DataRepositoryImpl
 import javax.inject.Singleton
 
 /**
@@ -24,4 +26,9 @@ class ApplicationModule {
     fun provideContext(application: Application):Context{
         return application
     }
+
+    @Provides
+    @Singleton
+    fun provideDataRepository(dataRepositoryImpl: DataRepositoryImpl): DataRepository =dataRepositoryImpl
+
 }

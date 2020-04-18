@@ -8,9 +8,10 @@ import com.google.gson.annotations.SerializedName
 data class CategoriesItem(
 
     @PrimaryKey(autoGenerate = true)
-    var id: Long? = null,
+    var _id: Long? = null,
 
     @SerializedName("id")
+    @ColumnInfo(name="category_id")
     var categoryId: String? = null,
     var pluralName: String? = null,
     var name: String? = null,
@@ -23,7 +24,7 @@ data class CategoriesItem(
     @ForeignKey
         (
         entity = Venue::class,
-        parentColumns = ["id"],
+        parentColumns = ["_id"],
         childColumns = ["venueId"],
         onDelete = CASCADE
     )

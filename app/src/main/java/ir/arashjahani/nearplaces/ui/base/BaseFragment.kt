@@ -9,26 +9,20 @@ import dagger.android.support.AndroidSupportInjection
 /**
  * Created By ArashJahani on 2020/04/17
  */
-open abstract class BaseFragment<V : BaseViewModel<*>> : Fragment()  {
+open abstract class BaseFragment: Fragment()  {
 
     lateinit var mRootView: View
-    lateinit var mViewModel: V
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         AndroidSupportInjection.inject(this);
 
-        mViewModel = getViewModel()
-
     }
 
     fun hideActionBar(){
         (activity as AppCompatActivity).supportActionBar?.hide()
     }
-
-    abstract fun getViewModel():V
 
 
 }

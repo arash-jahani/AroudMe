@@ -9,9 +9,9 @@ import ir.arashjahani.nearplaces.data.model.Location
 data class Venue(
 
     @PrimaryKey(autoGenerate = true)
-    var id: Long? = null,
+    var _id: Long? = null,
 
-    @SerializedName("id")
+    @SerializedName("venue_id")
     var venueId: String? = null,
     var hasPerk: Boolean? = null,
     var referralId: String? = null,

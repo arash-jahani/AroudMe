@@ -13,7 +13,7 @@ interface ApiService {
 
     @GET("venues/search")
     fun getNearestVenue(
-        @Query("||") location: String,
+        @Query("ll") location: String,
         @Query("llAcc") accuracy: Int,
         @Query("limit") limit: Int
     ): Single<ApiGeneralResponse<VenuesResponse>>
