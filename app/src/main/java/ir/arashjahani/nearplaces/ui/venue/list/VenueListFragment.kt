@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 
 import ir.arashjahani.nearplaces.R
 import ir.arashjahani.nearplaces.data.model.Venue
+import ir.arashjahani.nearplaces.data.model.VenueWithCategoryItem
 import ir.arashjahani.nearplaces.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_venue_list.*
 import javax.inject.Inject
@@ -54,9 +55,9 @@ class VenueListFragment : BaseFragment(),VenuesAdapter.VenueAdapterItemClickList
     }
 
     fun initObserves() {
-        mVenuesListViewModel.venueListLiveData.observe(
+        mVenuesListViewModel.venueWithCategoryListLiveData.observe(
             viewLifecycleOwner,
-            Observer<PagedList<Venue>> {
+            Observer<PagedList<VenueWithCategoryItem>> {
                 Log.d("Activity", "Venues list: ${it?.size}")
                 mVenuesAdapter.submitList(it)
             })
@@ -75,7 +76,7 @@ class VenueListFragment : BaseFragment(),VenuesAdapter.VenueAdapterItemClickList
         mVenuesAdapter.setOnItemClickListener(this)
         rv_venues.adapter = mVenuesAdapter
 
-        mVenuesListViewModel.getVenues("")
+        mVenuesListViewModel.getVenues("35.758990, 51.410122")
     }
 
     override fun onResume() {

@@ -2,14 +2,10 @@ package ir.arashjahani.nearplaces.data
 
 import androidx.paging.LivePagedListBuilder
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import ir.arashjahani.nearplaces.data.local.db.VenueDao
 import ir.arashjahani.nearplaces.data.model.VenueListResult
-import ir.arashjahani.nearplaces.data.model.api.ApiGeneralResponse
-import ir.arashjahani.nearplaces.data.model.api.VenuesResponse
 import ir.arashjahani.nearplaces.data.remote.ApiService
 import ir.arashjahani.nearplaces.data.utils.VenueBoundaryCondition
-import ir.arashjahani.nearplaces.utils.AppConstants.ACCURACY
 import ir.arashjahani.nearplaces.utils.AppConstants.PAGE_SIZE
 import javax.inject.Inject
 
@@ -30,6 +26,8 @@ class DataRepositoryImpl @Inject constructor(
     override fun getNearestVenues(location: String):VenueListResult {
 
         val networkErrors =boundaryCallback.networkErrors
+
+        boundaryCallback.location=location
 
         // Get the paged list
         val data = LivePagedListBuilder(mVenueDAO._loadVenues(), PAGE_SIZE)

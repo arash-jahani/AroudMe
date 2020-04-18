@@ -11,10 +11,12 @@ import retrofit2.http.Query
  */
 interface ApiService {
 
-    @GET("venues/search")
+    @GET("venues/explore")
     fun getNearestVenue(
         @Query("ll") location: String,
-        @Query("llAcc") accuracy: Int,
-        @Query("limit") limit: Int
+        @Query("radius") radius: Int,
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
+
     ): Single<ApiGeneralResponse<VenuesResponse>>
 }

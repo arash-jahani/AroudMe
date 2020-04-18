@@ -9,7 +9,7 @@ import androidx.paging.PagedList
 
 data class VenueListResult(
 
-    val data: LiveData<PagedList<Venue>>,
+    val data: LiveData<PagedList<VenueWithCategoryItem>>,
     val networkErrors: LiveData<String>
 
 )

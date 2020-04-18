@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ir.arashjahani.nearplaces.R
 import ir.arashjahani.nearplaces.data.model.Venue
+import ir.arashjahani.nearplaces.data.model.VenueWithCategoryItem
 import ir.arashjahani.nearplaces.utils.getUrl
 import kotlinx.android.synthetic.main.item_venue.view.*
 
@@ -16,14 +17,15 @@ import kotlinx.android.synthetic.main.item_venue.view.*
  * Created By ArashJahani on 2020/04/17
  */
 
-class VenuesAdapter() : PagedListAdapter<Venue, RecyclerView.ViewHolder>(VENUE_COMPARATOR) {
+class VenuesAdapter() :
+    PagedListAdapter<VenueWithCategoryItem, RecyclerView.ViewHolder>(VENUE_COMPARATOR) {
 
     private lateinit var itemClickListener: VenueAdapterItemClickListener
 
 
     interface VenueAdapterItemClickListener {
 
-        fun onVenueItemClick(venueItem: Venue)
+        fun onVenueItemClick(venue: Venue)
 
     }
 
@@ -55,17 +57,21 @@ class VenuesAdapter() : PagedListAdapter<Venue, RecyclerView.ViewHolder>(VENUE_C
 
         private var venue: Venue? = null
 
-        fun bindData(venue: Venue) {
+        fun bindData(venueWithCategoryItem: VenueWithCategoryItem) {
 
-            this.venue = venue
+            venue = venueWithCategoryItem.venue
+            venue!!.categories = venueWithCategoryItem.categories
 
-            itemView.lbl_title.text = venue.name
+            itemView.lbl_title.text = venue!!.name
 
-            itemView.lbl_distance.text="${venue.location?.distance} m"
+            itemView.lbl_distance.text = "${venue!!.location?.distance} m"
 
-            venue.categories?.let {
+            venue!!.categories?.let {
 
-                itemView.lbl_category.text=it[0].name
+                if (it.isEmpty())
+                    return@let
+
+                itemView.lbl_category.text = it[0].name
 
                 Glide.with(itemView.context)
                     .load(it[0].icon?.getUrl(88))
@@ -86,12 +92,18 @@ class VenuesAdapter() : PagedListAdapter<Venue, RecyclerView.ViewHolder>(VENUE_C
 
 
     companion object {
-        private val VENUE_COMPARATOR = object : DiffUtil.ItemCallback<Venue>() {
-            override fun areItemsTheSame(oldItem: Venue, newItem: Venue): Boolean =
-                oldItem.venueId == newItem.venueId
+        private val VENUE_COMPARATOR = object : DiffUtil.ItemCallback<VenueWithCategoryItem>() {
+            override fun areItemsTheSame(
+                oldWithCategoryItem: VenueWithCategoryItem,
+                newWithCategoryItem: VenueWithCategoryItem
+            ): Boolean =
+                oldWithCategoryItem.venue.venueId == newWithCategoryItem.venue.venueId
 
-            override fun areContentsTheSame(oldItem: Venue, newItem: Venue): Boolean =
-                oldItem == newItem
+            override fun areContentsTheSame(
+                oldWithCategoryItem: VenueWithCategoryItem,
+                newWithCategoryItem: VenueWithCategoryItem
+            ): Boolean =
+                oldWithCategoryItem.venue == newWithCategoryItem.venue
         }
     }
 

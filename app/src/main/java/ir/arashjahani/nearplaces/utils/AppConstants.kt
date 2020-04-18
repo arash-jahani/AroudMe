@@ -12,7 +12,7 @@ object AppConstants {
     const val VERSION="20200414"
 
     const val PAGE_SIZE = 40
-    const val ACCURACY=100
+    const val RADIUS=100
 
 
 }

@@ -28,5 +28,5 @@ data class CategoriesItem(
         childColumns = ["venueId"],
         onDelete = CASCADE
     )
-    var venueId: Long? = null
+    var venueId: String? = null
 )

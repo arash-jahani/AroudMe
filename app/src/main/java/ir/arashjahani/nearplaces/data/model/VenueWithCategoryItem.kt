@@ -7,10 +7,10 @@ import androidx.room.Relation
  * Created By ArashJahani on 2020/04/16
  */
 
-class VenueItem (
+class VenueWithCategoryItem (
 
     @Embedded
-    val venue: Venue,
+    var venue: Venue,
 
     @Relation(parentColumn = "_id", entityColumn = "venueId", entity = CategoriesItem::class)
     val categories: List<CategoriesItem>? = null

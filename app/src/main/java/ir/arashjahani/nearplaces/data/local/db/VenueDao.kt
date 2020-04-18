@@ -3,8 +3,9 @@ package ir.arashjahani.nearplaces.data.local.db
 import androidx.paging.DataSource
 import androidx.room.*
 import ir.arashjahani.nearplaces.data.model.CategoriesItem
-import ir.arashjahani.nearplaces.data.model.VenueItem
+import ir.arashjahani.nearplaces.data.model.VenueWithCategoryItem
 import ir.arashjahani.nearplaces.data.model.Venue
+import ir.arashjahani.nearplaces.data.model.api.VenueItem
 
 /**
  * Created By ArashJahani on 2020/04/16
@@ -12,11 +13,13 @@ import ir.arashjahani.nearplaces.data.model.Venue
 @Dao
 abstract class VenueDao {
 
-    public fun insertAll(venues: List<Venue>) {
-        venues.forEach { venue: Venue ->
-            venue.categories?.let {
-                insertCategoriesForVenue(venue, it)
+    public fun insertAll(venueItems: List<VenueItem>) {
+        var venues: ArrayList<Venue> = ArrayList<Venue>();
+        venueItems.forEach { venueItem: VenueItem ->
+            venueItem.venue.categories?.let {
+                insertCategoriesForVenue(venueItem.venue, it)
             }
+            venues.add(venueItem.venue)
         }
         _saveVenues(venues)
     }
@@ -35,7 +38,7 @@ abstract class VenueDao {
 
     private fun insertCategoriesForVenue(venue: Venue, categoriesItem: List<CategoriesItem>) {
         categoriesItem.forEach {
-            it.venueId = venue._id
+            it.venueId = venue.venueId
         }
         _saveVenueCategories(categoriesItem);
     }
@@ -48,6 +51,6 @@ abstract class VenueDao {
 
     @Transaction
     @Query("SELECT * from venue")
-    abstract fun _loadVenues(): DataSource.Factory<Int,Venue>
+    abstract fun _loadVenues(): DataSource.Factory<Int, VenueWithCategoryItem>
 
 }

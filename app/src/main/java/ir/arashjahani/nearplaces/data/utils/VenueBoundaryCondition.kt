@@ -6,20 +6,22 @@ import androidx.paging.PagedList
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import ir.arashjahani.nearplaces.data.local.db.VenueDao
-import ir.arashjahani.nearplaces.data.model.Venue
+import ir.arashjahani.nearplaces.data.model.VenueWithCategoryItem
 import ir.arashjahani.nearplaces.data.model.api.ApiGeneralResponse
 import ir.arashjahani.nearplaces.data.model.api.VenuesResponse
 import ir.arashjahani.nearplaces.data.remote.ApiService
 import ir.arashjahani.nearplaces.utils.AppConstants
+import ir.arashjahani.nearplaces.utils.AppConstants.PAGE_SIZE
 
 /**
  * Created By ArashJahani on 2020/04/18
  */
-class VenueBoundaryCondition(private val mApiService: ApiService, private val mVenueDAO: VenueDao) : PagedList.BoundaryCallback<Venue>() {
+class VenueBoundaryCondition(private val mApiService: ApiService, private val mVenueDAO: VenueDao) :
+    PagedList.BoundaryCallback<VenueWithCategoryItem>() {
 
     private val subscriptions = CompositeDisposable()
 
-
+    internal var location: String = ""
     private var lastRequestPageNumber = 1
 
     private val _networkErrors = MutableLiveData<String>()
@@ -35,7 +37,7 @@ class VenueBoundaryCondition(private val mApiService: ApiService, private val mV
         requestAndSaveData()
     }
 
-    override fun onItemAtEndLoaded(itemAtEnd: Venue) {
+    override fun onItemAtEndLoaded(withCategoryItemAtEnd: VenueWithCategoryItem) {
         requestAndSaveData()
     }
 
@@ -44,20 +46,23 @@ class VenueBoundaryCondition(private val mApiService: ApiService, private val mV
 
         isRequestInProgress = true
 
-        subscriptions.add(mApiService.getNearestVenue("35.758990, 51.410122",
-            AppConstants.ACCURACY,lastRequestPageNumber)
+        subscriptions.add(mApiService.getNearestVenue(
+            location,
+            AppConstants.RADIUS, PAGE_SIZE, lastRequestPageNumber
+        )
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.newThread())
             .subscribe(
                 { venues: ApiGeneralResponse<VenuesResponse> ->
 
-                    venues.response.venues?.let {
+                    venues.response.groups[0].items?.let {
 
-                        mVenueDAO.insertAll(it).also {
-                            lastRequestPageNumber++
+                        mVenueDAO.insertAll(it)
+
+                        if (it.size == 40) {
                             isRequestInProgress = false
+                            lastRequestPageNumber++;
                         }
-
                     }
 
                 }, { error ->
@@ -66,7 +71,8 @@ class VenueBoundaryCondition(private val mApiService: ApiService, private val mV
         )
     }
 
-    fun onClear(){
+    fun onClear() {
         subscriptions.clear()
     }
+
 }

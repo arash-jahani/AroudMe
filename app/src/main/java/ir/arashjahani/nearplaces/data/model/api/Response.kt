@@ -7,5 +7,4 @@ package ir.arashjahani.nearplaces.data.model.api
 class Response<T>(
 
 
-
 )

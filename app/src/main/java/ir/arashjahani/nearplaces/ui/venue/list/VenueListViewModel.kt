@@ -6,10 +6,8 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import ir.arashjahani.nearplaces.data.DataRepository
-import ir.arashjahani.nearplaces.data.model.Venue
+import ir.arashjahani.nearplaces.data.model.VenueWithCategoryItem
 import ir.arashjahani.nearplaces.data.model.VenueListResult
-import ir.arashjahani.nearplaces.data.remote.ApiService
-import ir.arashjahani.nearplaces.ui.base.BaseViewModel
 import javax.inject.Inject
 
 /**
@@ -25,7 +23,7 @@ class VenueListViewModel @Inject constructor(val dataRepository: DataRepository)
         dataRepository.getNearestVenues(it)
     }
 
-    val venueListLiveData: LiveData<PagedList<Venue>> = Transformations.switchMap(venueResultLiveData) { it -> it.data }
+    val venueWithCategoryListLiveData: LiveData<PagedList<VenueWithCategoryItem>> = Transformations.switchMap(venueResultLiveData) { it -> it.data }
 
     val networkErrors: LiveData<String> =  Transformations.switchMap(venueResultLiveData) { it -> it.networkErrors }
 

@@ -7,6 +7,7 @@ import ir.arashjahani.nearplaces.data.model.Venue
  */
 class VenuesResponse(
 
-    val venues: List<Venue>
+    val totalResults: Int? = null,
+    val groups: List<Groups>
 
 )
