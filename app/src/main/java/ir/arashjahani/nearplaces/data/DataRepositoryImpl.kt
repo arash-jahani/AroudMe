@@ -17,8 +17,6 @@ class DataRepositoryImpl @Inject constructor(
     private val mVenueDAO: VenueDao
 ) : DataRepository {
 
-    private val subscriptions = CompositeDisposable()
-
     val boundaryCallback by lazy {
         VenueBoundaryCondition(mApiService, mVenueDAO)
     }
@@ -40,7 +38,7 @@ class DataRepositoryImpl @Inject constructor(
     }
 
     override fun onClearResources() {
-        subscriptions.clear()
+        boundaryCallback.onClear()
     }
 
 }

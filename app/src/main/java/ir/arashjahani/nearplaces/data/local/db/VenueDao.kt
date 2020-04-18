@@ -50,7 +50,7 @@ abstract class VenueDao {
     abstract fun _saveVenueCategories(categoriesItem: List<CategoriesItem>)
 
     @Transaction
-    @Query("SELECT * from venue")
+    @Query("SELECT venue.*, category.* FROM venue INNER JOIN category ON venue.venue_id = category.venueId")
     abstract fun _loadVenues(): DataSource.Factory<Int, VenueWithCategoryItem>
 
 }

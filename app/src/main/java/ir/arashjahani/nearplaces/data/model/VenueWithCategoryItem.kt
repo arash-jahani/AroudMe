@@ -12,7 +12,7 @@ class VenueWithCategoryItem (
     @Embedded
     var venue: Venue,
 
-    @Relation(parentColumn = "_id", entityColumn = "venueId", entity = CategoriesItem::class)
+    @Relation(parentColumn = "venue_id", entityColumn = "venueId", entity = CategoriesItem::class)
     val categories: List<CategoriesItem>? = null
 
 )

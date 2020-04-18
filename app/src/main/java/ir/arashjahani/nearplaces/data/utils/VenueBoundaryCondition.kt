@@ -41,6 +41,7 @@ class VenueBoundaryCondition(private val mApiService: ApiService, private val mV
         requestAndSaveData()
     }
 
+
     private fun requestAndSaveData() {
         if (isRequestInProgress) return
 

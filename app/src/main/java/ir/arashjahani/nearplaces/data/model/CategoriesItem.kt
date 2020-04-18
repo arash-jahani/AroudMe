@@ -3,12 +3,14 @@ package ir.arashjahani.nearplaces.data.model
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 import com.google.gson.annotations.SerializedName
+import org.jetbrains.annotations.NotNull
 
-@Entity
+@Entity(tableName = "category")
 data class CategoriesItem(
 
     @PrimaryKey(autoGenerate = true)
-    var _id: Long? = null,
+    @NotNull
+    var _id: Long = 0,
 
     @SerializedName("id")
     @ColumnInfo(name="category_id")
@@ -21,12 +23,12 @@ data class CategoriesItem(
     var primary: Boolean? = null,
 
 
-    @ForeignKey
-        (
-        entity = Venue::class,
-        parentColumns = ["_id"],
-        childColumns = ["venueId"],
-        onDelete = CASCADE
-    )
+//    @ForeignKey
+//        (
+//        entity = Venue::class,
+//        parentColumns = ["_id"],
+//        childColumns = ["venueId"],
+//        onDelete = CASCADE
+//    )
     var venueId: String? = null
 )

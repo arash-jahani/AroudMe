@@ -4,12 +4,14 @@ import androidx.room.*
 import com.google.gson.annotations.SerializedName
 import ir.arashjahani.nearplaces.data.model.CategoriesItem
 import ir.arashjahani.nearplaces.data.model.Location
+import org.jetbrains.annotations.NotNull
 
-@Entity
+@Entity(tableName = "venue")
 data class Venue(
 
     @PrimaryKey(autoGenerate = true)
-    var _id:Long? = null,
+    @NotNull
+    var _id:Long = 0,
 
 
     @SerializedName("id")
