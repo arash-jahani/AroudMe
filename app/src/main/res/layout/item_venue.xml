@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:background="#ffffff"
+    >
 
     <ImageView
         android:id="@+id/img_cat"
@@ -15,6 +16,7 @@
         android:layout_marginBottom="8dp"
         android:scaleType="fitXY"
         android:src="@drawable/ic_launcher_background"
+        android:tint="#858585"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,9 +28,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:maxLines="2"
         android:text="TextView"
-        android:textColor="@android:color/white"
-        android:textSize="23sp"
+        android:textColor="#454545"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_cat"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,22 +40,26 @@
         android:id="@+id/lbl_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="TextView"
-        android:textColor="@android:color/white"
-        app:layout_constraintStart_toStartOf="@+id/lbl_title"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_title" />
+        android:textColor="#666666"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/img_cat"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="94dp" />
 
     <TextView
         android:id="@+id/lbl_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:text="8m"
         android:textAlignment="center"
-        android:textColor="@android:color/holo_orange_light"
-        android:textSize="18sp"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

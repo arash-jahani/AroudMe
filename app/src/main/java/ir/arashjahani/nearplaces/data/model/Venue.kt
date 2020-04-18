@@ -19,7 +19,7 @@ data class Venue(
     var venueId: String?=null,
     var hasPerk: Boolean? = null,
     var referralId: String? = null,
-    var name: String? = null,
+    var name: String = "",
 
     @Embedded(prefix = "Loc_")
     var location: Location? = null,

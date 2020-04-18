@@ -55,18 +55,18 @@ class VenuesAdapter() :
 
     class VenueViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private var venue: Venue? = null
+        lateinit var venue: Venue
 
         fun bindData(venueWithCategoryItem: VenueWithCategoryItem) {
 
             venue = venueWithCategoryItem.venue
-            venue!!.categories = venueWithCategoryItem.categories
+            venue.categories = venueWithCategoryItem.categories
 
-            itemView.lbl_title.text = venue!!.name
+            itemView.lbl_title.text = venue.name.split("|").first()
 
-            itemView.lbl_distance.text = "${venue!!.location?.distance} m"
+            itemView.lbl_distance.text = "${venue.location?.distance} m"
 
-            venue!!.categories?.let {
+            venue.categories?.let {
 
                 if (it.isEmpty())
                     return@let
@@ -84,7 +84,7 @@ class VenuesAdapter() :
         fun setUpClickableView(clickListener: VenueAdapterItemClickListener) {
 
             itemView.setOnClickListener { view ->
-                venue?.let { clickListener.onVenueItemClick(it) }
+                 clickListener.onVenueItemClick(venue)
             }
 
         }

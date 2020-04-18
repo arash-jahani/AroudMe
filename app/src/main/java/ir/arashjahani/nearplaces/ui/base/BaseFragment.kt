@@ -20,9 +20,4 @@ open abstract class BaseFragment: Fragment()  {
 
     }
 
-    fun hideActionBar(){
-        (activity as AppCompatActivity).supportActionBar?.hide()
-    }
-
-
 }
