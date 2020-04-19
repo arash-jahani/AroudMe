@@ -6,8 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import ir.arashjahani.nearplaces.data.DataRepository
-import ir.arashjahani.nearplaces.data.model.Location
 import ir.arashjahani.nearplaces.data.model.VenueWithCategoryItem
 import ir.arashjahani.nearplaces.data.model.VenueListResult
 import ir.arashjahani.nearplaces.utils.AppConstants.DISATANCE
@@ -22,11 +24,10 @@ class VenueListViewModel @Inject constructor(
     val context: Context
 ) : ViewModel() {
 
-    val newlocation: MutableLiveData<String> = dataRepository.getLiveLocation()
+    val trackLocation: MutableLiveData<String> = dataRepository.getLiveLocation()
 
-    val locationLiveData = MutableLiveData<String>()
-
-    val venueResultLiveData: LiveData<VenueListResult> = Transformations.map(locationLiveData)
+    val updateLocationLiveData = MutableLiveData<String>()
+    val venueResultLiveData: LiveData<VenueListResult> = Transformations.map(updateLocationLiveData)
     {
         dataRepository.getNearestVenues(it)
     }
@@ -37,6 +38,24 @@ class VenueListViewModel @Inject constructor(
     val networkErrors: LiveData<String> =
         Transformations.switchMap(venueResultLiveData) { it -> it.networkErrors }
 
+
+    fun clearPreviousVenuesThenSaveSomeNew() {
+
+        Single.fromCallable {
+            dataRepository.clearAllVenues()
+        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                this.updateLocationLiveData.value = getLastSavedLocation()
+
+            }, {
+
+            }
+            );
+
+
+    }
 
     fun trackLocation() {
         dataRepository.fetchLocation()

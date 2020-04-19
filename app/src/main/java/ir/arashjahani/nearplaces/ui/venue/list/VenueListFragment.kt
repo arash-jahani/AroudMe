@@ -1,5 +1,6 @@
 package ir.arashjahani.nearplaces.ui.venue.list
 
+import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -18,7 +20,9 @@ import ir.arashjahani.nearplaces.R
 import ir.arashjahani.nearplaces.data.model.Venue
 import ir.arashjahani.nearplaces.data.model.VenueWithCategoryItem
 import ir.arashjahani.nearplaces.ui.base.BaseFragment
+import ir.arashjahani.nearplaces.utils.AppConstants
 import ir.arashjahani.nearplaces.utils.AppConstants.PERMISSION_ID
+import ir.arashjahani.nearplaces.utils.checkLocationPermission
 import ir.arashjahani.nearplaces.utils.isLocationEnabled
 import kotlinx.android.synthetic.main.fragment_venue_list.*
 import javax.inject.Inject
@@ -57,21 +61,24 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
         prepareView()
 
         if (!mVenuesListViewModel.getLastSavedLocation().isEmpty()) {
-            mVenuesListViewModel.locationLiveData.value=mVenuesListViewModel.getLastSavedLocation()
+            mVenuesListViewModel.updateLocationLiveData.value =
+                mVenuesListViewModel.getLastSavedLocation()
         }
+        getLocation()
     }
 
     fun initObserves() {
 
-        mVenuesListViewModel.newlocation.observe(viewLifecycleOwner, Observer {
+        mVenuesListViewModel.trackLocation.observe(viewLifecycleOwner, Observer {
             Log.v("Location Finder", it)
             if (mVenuesListViewModel.getLastSavedLocation().isEmpty()) {
                 //save location
                 mVenuesListViewModel.saveLocation(it)
-                mVenuesListViewModel.locationLiveData.value=it
+                mVenuesListViewModel.updateLocationLiveData.value = it
             }
             if (mVenuesListViewModel.isLocationChanged(it)) {
-                //show toast
+                mVenuesListViewModel.saveLocation(it)
+                lbl_new_place.visibility = View.VISIBLE
             }
 
         })
@@ -92,6 +99,11 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
 
 
         fab_detect_location.setOnClickListener { getLocation() }
+
+        lbl_new_place.setOnClickListener {
+            mVenuesListViewModel.clearPreviousVenuesThenSaveSomeNew()
+
+        }
 
         // add dividers between RecyclerView's row items
         val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
@@ -118,19 +130,25 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
     ) {
         if (requestCode == PERMISSION_ID) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                // Granted. Start getting the location information
+                getLocation()
             }
         }
     }
 
     fun getLocation() {
 
-        if (context?.isLocationEnabled()!!)
+        if (context?.isLocationEnabled()!! && context?.checkLocationPermission()!!) {
             mVenuesListViewModel.trackLocation()
-//        else
-//            mVenuesListViewModel.locationFinderSetup()
+        } else {
 
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ),
+                    AppConstants.PERMISSION_ID
+                )
+
+        }
     }
-
-
 }

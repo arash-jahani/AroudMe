@@ -24,18 +24,6 @@ abstract class VenueDao {
          _saveVenues(venues)
     }
 
-//    public fun getAllVenues(): List<Venue> {
-//        var venueItems: List<VenueItem> = _loadVenues()
-//        var venues: ArrayList<Venue> = ArrayList<Venue>(venueItems.size)
-//
-//        venueItems.forEach {
-//            //it.venue.categories=
-//            it.venue.categories = it.categories
-//            venues.add(it.venue)
-//        }
-//        return venues
-//    }
-
     private fun insertCategoriesForVenue(venue: Venue, categoriesItem: List<CategoriesItem>) {
         categoriesItem.forEach {
             it.venueId = venue.venueId
@@ -53,4 +41,9 @@ abstract class VenueDao {
     @Query("SELECT venue.*, category.* FROM venue INNER JOIN category ON venue.venue_id = category.venueId")
     abstract fun _loadVenues(): DataSource.Factory<Int, VenueWithCategoryItem>
 
+    @Query("DELETE FROM venue")
+    abstract fun clearAllVenue()
+
+    @Query("DELETE FROM category")
+    abstract fun clearAllCategory()
 }

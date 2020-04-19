@@ -16,6 +16,7 @@ import ir.arashjahani.nearplaces.data.model.VenueListResult
 import ir.arashjahani.nearplaces.data.remote.ApiService
 import ir.arashjahani.nearplaces.data.utils.VenueBoundaryCondition
 import ir.arashjahani.nearplaces.utils.AppConstants
+import ir.arashjahani.nearplaces.utils.AppConstants.KEY_LAST_OFFSET
 import ir.arashjahani.nearplaces.utils.AppConstants.KEY_LOCATION
 import ir.arashjahani.nearplaces.utils.AppConstants.PAGE_SIZE
 import ir.arashjahani.nearplaces.utils.checkLocationPermission
@@ -34,7 +35,7 @@ class DataRepositoryImpl @Inject constructor(
 ) : DataRepository {
 
     val boundaryCallback by lazy {
-        VenueBoundaryCondition(mApiService, mVenueDAO,sharedPreferencesHelper)
+        VenueBoundaryCondition(mApiService, mVenueDAO, sharedPreferencesHelper)
     }
 
     val newLocationLiveData = MutableLiveData<String>()
@@ -57,36 +58,20 @@ class DataRepositoryImpl @Inject constructor(
 
     override
     fun fetchLocation() {
-        /*
-         * One time location request
-         */
-        if (context.isLocationEnabled() && context.checkLocationPermission()) {
 
-            LocationServices.getFusedLocationProviderClient(context)
-                .requestLocationUpdates(
-                    locationRequest, object : LocationCallback() {
-                        override fun onLocationResult(p0: LocationResult?) {
+        LocationServices.getFusedLocationProviderClient(context)
+            .requestLocationUpdates(
+                locationRequest, object : LocationCallback() {
+                    override fun onLocationResult(p0: LocationResult?) {
 
-                            var loc: String =
-                                "${p0!!.lastLocation.latitude}, ${p0.lastLocation.longitude}"
-                            newLocationLiveData.postValue(loc)
+                        var loc: String =
+                            "${p0!!.lastLocation.latitude}, ${p0.lastLocation.longitude}"
+                        newLocationLiveData.postValue(loc)
 
-                        }
-                    },
-                    Looper.myLooper()
-                )
-
-//            LocationServices.getFusedLocationProviderClient(context)
-//                ?.lastLocation
-//                ?.addOnSuccessListener { location: android.location.Location? ->
-//                    if (location != null) {
-//                        var loc: String = "${location.latitude}, ${location.longitude}"
-//                        sharedPreferencesHelper.putString(AppConstants.KEY_LOCATION, loc)
-//                        Log.v("Location Finder", loc)
-//
-//                    }
-//                }
-        }
+                    }
+                },
+                Looper.myLooper()
+            )
     }
 
     override fun getLiveLocation(): MutableLiveData<String> {
@@ -99,6 +84,13 @@ class DataRepositoryImpl @Inject constructor(
 
     override fun savedLocation(location: String) {
         sharedPreferencesHelper.putString(KEY_LOCATION, location)
+    }
+
+    override fun clearAllVenues() {
+        sharedPreferencesHelper.putInt(KEY_LAST_OFFSET, 1)
+        mVenueDAO.clearAllVenue()
+        mVenueDAO.clearAllCategory()
+
     }
 
     override fun onClearResources() {

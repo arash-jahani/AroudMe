@@ -19,6 +19,7 @@ interface DataRepository {
 
     public fun savedLocation(location:String)
 
+    public fun clearAllVenues()
 
     public fun onClearResources()
 

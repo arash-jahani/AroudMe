@@ -23,16 +23,6 @@ fun Context.isLocationEnabled(): Boolean {
 fun Context.checkLocationPermission(): Boolean =
     this.checkCallingOrSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
 
-fun Activity.requestPermissions() {
-    ActivityCompat.requestPermissions(
-        this,
-        arrayOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ),
-        AppConstants.PERMISSION_ID
-    )
-}
 
 fun String.toLocation(): Location? {
 

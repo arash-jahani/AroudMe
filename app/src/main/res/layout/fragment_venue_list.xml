@@ -23,17 +23,18 @@
             android:elevation="6dp"
             app:cardCornerRadius="5dp"
             app:cardElevation="6dp"
-            app:layout_collapseMode="pin"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:layout_collapseMode="pin">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text=""/>
 
 
         </androidx.cardview.widget.CardView>
 
     </com.google.android.material.appbar.AppBarLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_venues"
@@ -44,6 +45,22 @@
         tools:listitem="@layout/item_venue"
         android:background="#dddddd"/>
 
+
+    <TextView
+        android:id="@+id/lbl_new_place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  New Places Around You  "
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="24dp"
+        android:clickable="true"
+        android:padding="8dp"
+        android:background="@drawable/new_places_alert"
+        android:textColor="#ffffff"
+        android:visibility="invisible"
+
+        />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_detect_location"
         android:layout_width="wrap_content"

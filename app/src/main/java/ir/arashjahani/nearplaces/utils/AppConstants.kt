@@ -14,7 +14,7 @@ object AppConstants {
     const val PAGE_SIZE = 40
     const val RADIUS=10_0000
 
-    const val PERMISSION_ID=30004000
+    const val PERMISSION_ID=100
 
     const val DISATANCE=100
 
