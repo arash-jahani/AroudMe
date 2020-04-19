@@ -24,8 +24,8 @@ class VenueBoundaryCondition(private val mApiService: ApiService, private val mV
 
     private val subscriptions = CompositeDisposable()
 
-    internal var location: String = ""
-    private var lastRequestOffset = preferencesHelper.getInt(KEY_LAST_OFFSET)
+    private var location: String = ""
+    private var lastRequestOffset = 1
 
     private val _networkErrors = MutableLiveData<String>()
 
@@ -74,6 +74,12 @@ class VenueBoundaryCondition(private val mApiService: ApiService, private val mV
                     isRequestInProgress = false
                 })
         )
+    }
+
+    fun freshRequest(loc:String){
+        location = loc
+        isRequestInProgress = false
+        lastRequestOffset = preferencesHelper.getInt(KEY_LAST_OFFSET)
     }
 
     fun onClear() {

@@ -80,6 +80,10 @@ class VenueListViewModel @Inject constructor(
         return false
     }
 
+    fun stopLocationTracker(){
+        dataRepository.stopLocationTracked()
+    }
+
     override fun onCleared() {
         super.onCleared()
         dataRepository.onClearResources()

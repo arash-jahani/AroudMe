@@ -3,25 +3,19 @@ package ir.arashjahani.nearplaces.data
 import android.content.Context
 import android.os.Looper
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import ir.arashjahani.nearplaces.data.local.db.VenueDao
 import ir.arashjahani.nearplaces.data.local.shared.PreferencesHelper
 import ir.arashjahani.nearplaces.data.model.VenueListResult
 import ir.arashjahani.nearplaces.data.remote.ApiService
 import ir.arashjahani.nearplaces.data.utils.VenueBoundaryCondition
-import ir.arashjahani.nearplaces.utils.AppConstants
 import ir.arashjahani.nearplaces.utils.AppConstants.KEY_LAST_OFFSET
 import ir.arashjahani.nearplaces.utils.AppConstants.KEY_LOCATION
 import ir.arashjahani.nearplaces.utils.AppConstants.PAGE_SIZE
-import ir.arashjahani.nearplaces.utils.checkLocationPermission
-import ir.arashjahani.nearplaces.utils.isLocationEnabled
 import javax.inject.Inject
+
 
 /**
  * Created By ArashJahani on 2020/04/17
@@ -39,13 +33,14 @@ class DataRepositoryImpl @Inject constructor(
     }
 
     val newLocationLiveData = MutableLiveData<String>()
+    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
 
     override fun getNearestVenues(location: String): VenueListResult {
 
         val networkErrors = boundaryCallback.networkErrors
 
-        boundaryCallback.location = location
-
+        boundaryCallback.freshRequest(location)
         // Get the paged list
         val data = LivePagedListBuilder(mVenueDAO._loadVenues(), PAGE_SIZE)
             .setBoundaryCallback(boundaryCallback)
@@ -59,19 +54,28 @@ class DataRepositoryImpl @Inject constructor(
     override
     fun fetchLocation() {
 
-        LocationServices.getFusedLocationProviderClient(context)
-            .requestLocationUpdates(
-                locationRequest, object : LocationCallback() {
-                    override fun onLocationResult(p0: LocationResult?) {
+        if (this::fusedLocationProviderClient.isInitialized) {
+            fusedLocationProviderClient?.removeLocationUpdates(mLocationCallback)
+        }
 
-                        var loc: String =
-                            "${p0!!.lastLocation.latitude}, ${p0.lastLocation.longitude}"
-                        newLocationLiveData.postValue(loc)
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(context);
 
-                    }
-                },
-                Looper.myLooper()
-            )
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest, mLocationCallback,
+            Looper.myLooper()
+        )
+    }
+
+    var mLocationCallback: LocationCallback = object : LocationCallback() {
+        override fun onLocationResult(p0: LocationResult?) {
+
+            var loc: String =
+                "${p0!!.lastLocation.latitude}, ${p0.lastLocation.longitude}"
+            Log.v("Location Finder:", "fetchLocation")
+            newLocationLiveData.postValue(loc)
+
+        }
     }
 
     override fun getLiveLocation(): MutableLiveData<String> {
@@ -95,6 +99,11 @@ class DataRepositoryImpl @Inject constructor(
 
     override fun onClearResources() {
         boundaryCallback.onClear()
+    }
+
+    override fun stopLocationTracked() {
+        if (this::fusedLocationProviderClient.isInitialized)
+            fusedLocationProviderClient.removeLocationUpdates(mLocationCallback)
     }
 
 }

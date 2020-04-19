@@ -102,7 +102,7 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
 
         lbl_new_place.setOnClickListener {
             mVenuesListViewModel.clearPreviousVenuesThenSaveSomeNew()
-
+            lbl_new_place.visibility = View.INVISIBLE
         }
 
         // add dividers between RecyclerView's row items
@@ -114,9 +114,16 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        Log.v("Location Finder:","onPause")
+        mVenuesListViewModel.stopLocationTracker()
+    }
+
     override fun onResume() {
         super.onResume()
-        (activity as AppCompatActivity).supportActionBar?.show()
+        Log.v("Location Finder:","restart")
+        getLocation()
     }
 
     override fun onVenueItemClick(venueItem: Venue) {
@@ -141,13 +148,13 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
             mVenuesListViewModel.trackLocation()
         } else {
 
-                requestPermissions(
-                    arrayOf(
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ),
-                    AppConstants.PERMISSION_ID
-                )
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ),
+                AppConstants.PERMISSION_ID
+            )
 
         }
     }

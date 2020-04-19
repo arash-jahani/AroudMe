@@ -23,4 +23,5 @@ interface DataRepository {
 
     public fun onClearResources()
 
+    public fun stopLocationTracked()
 }
