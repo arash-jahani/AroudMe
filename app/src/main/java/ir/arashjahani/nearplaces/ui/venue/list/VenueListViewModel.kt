@@ -1,15 +1,17 @@
 package ir.arashjahani.nearplaces.ui.venue.list
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import ir.arashjahani.nearplaces.data.DataRepository
+import ir.arashjahani.nearplaces.data.model.Location
 import ir.arashjahani.nearplaces.data.model.VenueWithCategoryItem
 import ir.arashjahani.nearplaces.data.model.VenueListResult
+import ir.arashjahani.nearplaces.utils.AppConstants.DISATANCE
+import ir.arashjahani.nearplaces.utils.toLocation
 import javax.inject.Inject
 
 /**
@@ -20,7 +22,7 @@ class VenueListViewModel @Inject constructor(
     val context: Context
 ) : ViewModel() {
 
-    val newlocation: MutableLiveData<String> = dataRepository.getLocation()
+    val newlocation: MutableLiveData<String> = dataRepository.getLiveLocation()
 
     val locationLiveData = MutableLiveData<String>()
 
@@ -36,21 +38,27 @@ class VenueListViewModel @Inject constructor(
         Transformations.switchMap(venueResultLiveData) { it -> it.networkErrors }
 
 
-    fun getVenues(location: String) {
-        locationLiveData.value = location
-    }
-
-    fun locationFinderSetup() {
-        dataRepository.getLocation()
-
-    }
-
     fun trackLocation() {
-        dataRepository.saveLocation()
+        dataRepository.fetchLocation()
     }
 
-    fun stopTrackLocation() {
+    fun getLastSavedLocation(): String {
+        return dataRepository.getLastSavedLocation()
+    }
 
+    fun saveLocation(location: String) {
+        dataRepository.savedLocation(location)
+    }
+
+    fun isLocationChanged(newLocation: String): Boolean {
+        var lastLocation = dataRepository.getLastSavedLocation()
+        if (newLocation.isEmpty() || lastLocation.isEmpty()) {
+            return false
+        }
+        if (newLocation.toLocation()?.distanceTo(lastLocation.toLocation())!! > DISATANCE) {
+            return true
+        }
+        return false
     }
 
     override fun onCleared() {

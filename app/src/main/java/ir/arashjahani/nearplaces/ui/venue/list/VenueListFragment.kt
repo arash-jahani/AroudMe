@@ -55,12 +55,25 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
         initObserves()
 
         prepareView()
+
+        if (!mVenuesListViewModel.getLastSavedLocation().isEmpty()) {
+            mVenuesListViewModel.locationLiveData.value=mVenuesListViewModel.getLastSavedLocation()
+        }
     }
 
     fun initObserves() {
 
         mVenuesListViewModel.newlocation.observe(viewLifecycleOwner, Observer {
             Log.v("Location Finder", it)
+            if (mVenuesListViewModel.getLastSavedLocation().isEmpty()) {
+                //save location
+                mVenuesListViewModel.saveLocation(it)
+                mVenuesListViewModel.locationLiveData.value=it
+            }
+            if (mVenuesListViewModel.isLocationChanged(it)) {
+                //show toast
+            }
+
         })
 
         mVenuesListViewModel.venueWithCategoryListLiveData.observe(
@@ -87,7 +100,6 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
         mVenuesAdapter.setOnItemClickListener(this)
         rv_venues.adapter = mVenuesAdapter
 
-        mVenuesListViewModel.getVenues("35.758990, 51.410122")
     }
 
     override fun onResume() {
@@ -99,7 +111,11 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
 
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         if (requestCode == PERMISSION_ID) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 // Granted. Start getting the location information
@@ -111,11 +127,10 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
 
         if (context?.isLocationEnabled()!!)
             mVenuesListViewModel.trackLocation()
-        else
-            mVenuesListViewModel.locationFinderSetup()
+//        else
+//            mVenuesListViewModel.locationFinderSetup()
 
     }
-
 
 
 }

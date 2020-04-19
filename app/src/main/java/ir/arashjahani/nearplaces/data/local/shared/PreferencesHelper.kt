@@ -17,4 +17,12 @@ class PreferencesHelper @Inject constructor (private val sharedPreferences: Shar
         return sharedPreferences.getString(key,"")
     }
 
+    fun putInt(@NotNull key:String,@NotNull value:Int){
+        sharedPreferences.edit().putInt(key,value).apply()
+    }
+
+    fun getInt(@NotNull key:String):Int{
+        return sharedPreferences.getInt(key,1)
+    }
+
 }

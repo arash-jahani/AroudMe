@@ -12,11 +12,15 @@ object AppConstants {
     const val VERSION="20200414"
 
     const val PAGE_SIZE = 40
-    const val RADIUS=1000
-
-    const val KEY_LOCATION= "location"
+    const val RADIUS=10_0000
 
     const val PERMISSION_ID=30004000
+
+    const val DISATANCE=100
+
+
+    const val KEY_LOCATION= "location"
+    const val KEY_LAST_OFFSET= "last_offset"
 
 
 

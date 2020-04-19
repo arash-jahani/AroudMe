@@ -16,6 +16,7 @@ import ir.arashjahani.nearplaces.data.model.VenueListResult
 import ir.arashjahani.nearplaces.data.remote.ApiService
 import ir.arashjahani.nearplaces.data.utils.VenueBoundaryCondition
 import ir.arashjahani.nearplaces.utils.AppConstants
+import ir.arashjahani.nearplaces.utils.AppConstants.KEY_LOCATION
 import ir.arashjahani.nearplaces.utils.AppConstants.PAGE_SIZE
 import ir.arashjahani.nearplaces.utils.checkLocationPermission
 import ir.arashjahani.nearplaces.utils.isLocationEnabled
@@ -33,10 +34,10 @@ class DataRepositoryImpl @Inject constructor(
 ) : DataRepository {
 
     val boundaryCallback by lazy {
-        VenueBoundaryCondition(mApiService, mVenueDAO)
+        VenueBoundaryCondition(mApiService, mVenueDAO,sharedPreferencesHelper)
     }
 
-    val newLocationLiveData=MutableLiveData<String>()
+    val newLocationLiveData = MutableLiveData<String>()
 
     override fun getNearestVenues(location: String): VenueListResult {
 
@@ -55,7 +56,7 @@ class DataRepositoryImpl @Inject constructor(
     }
 
     override
-    fun saveLocation() {
+    fun fetchLocation() {
         /*
          * One time location request
          */
@@ -88,8 +89,16 @@ class DataRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getLocation(): MutableLiveData<String> {
+    override fun getLiveLocation(): MutableLiveData<String> {
         return newLocationLiveData
+    }
+
+    override fun getLastSavedLocation(): String {
+        return sharedPreferencesHelper.getString(KEY_LOCATION)
+    }
+
+    override fun savedLocation(location: String) {
+        sharedPreferencesHelper.putString(KEY_LOCATION, location)
     }
 
     override fun onClearResources() {

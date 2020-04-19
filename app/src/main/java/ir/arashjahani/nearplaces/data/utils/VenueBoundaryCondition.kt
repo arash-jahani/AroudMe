@@ -1,28 +1,31 @@
 package ir.arashjahani.nearplaces.data.utils
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import ir.arashjahani.nearplaces.data.local.db.VenueDao
+import ir.arashjahani.nearplaces.data.local.shared.PreferencesHelper
 import ir.arashjahani.nearplaces.data.model.VenueWithCategoryItem
 import ir.arashjahani.nearplaces.data.model.api.ApiGeneralResponse
 import ir.arashjahani.nearplaces.data.model.api.VenuesResponse
 import ir.arashjahani.nearplaces.data.remote.ApiService
 import ir.arashjahani.nearplaces.utils.AppConstants
+import ir.arashjahani.nearplaces.utils.AppConstants.KEY_LAST_OFFSET
 import ir.arashjahani.nearplaces.utils.AppConstants.PAGE_SIZE
 
 /**
  * Created By ArashJahani on 2020/04/18
  */
-class VenueBoundaryCondition(private val mApiService: ApiService, private val mVenueDAO: VenueDao) :
+class VenueBoundaryCondition(private val mApiService: ApiService, private val mVenueDAO: VenueDao,private val preferencesHelper: PreferencesHelper) :
     PagedList.BoundaryCallback<VenueWithCategoryItem>() {
 
     private val subscriptions = CompositeDisposable()
 
     internal var location: String = ""
-    private var lastRequestPageNumber = 1
+    private var lastRequestOffset = preferencesHelper.getInt(KEY_LAST_OFFSET)
 
     private val _networkErrors = MutableLiveData<String>()
 
@@ -49,7 +52,7 @@ class VenueBoundaryCondition(private val mApiService: ApiService, private val mV
 
         subscriptions.add(mApiService.getNearestVenue(
             location,
-            AppConstants.RADIUS, PAGE_SIZE, lastRequestPageNumber
+            AppConstants.RADIUS, PAGE_SIZE, lastRequestOffset
         )
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.newThread())
@@ -60,9 +63,10 @@ class VenueBoundaryCondition(private val mApiService: ApiService, private val mV
 
                         mVenueDAO.insertAll(it)
 
-                        if (it.size == 40) {
+                        if (it.size == PAGE_SIZE) {
                             isRequestInProgress = false
-                            lastRequestPageNumber+=PAGE_SIZE;
+                            lastRequestOffset+=PAGE_SIZE;
+                            preferencesHelper.putInt(KEY_LAST_OFFSET,lastRequestOffset)
                         }
                     }
 
