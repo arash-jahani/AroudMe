@@ -1,10 +1,13 @@
 package ir.arashjahani.nearplaces.data.model
 
+import android.os.Parcelable
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 import org.jetbrains.annotations.NotNull
 
+@Parcelize
 @Entity(tableName = "category")
 data class CategoriesItem(
 
@@ -31,4 +34,4 @@ data class CategoriesItem(
 //        onDelete = CASCADE
 //    )
     var venueId: String? = null
-)
+): Parcelable

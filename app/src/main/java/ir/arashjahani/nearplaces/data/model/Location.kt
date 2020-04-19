@@ -1,5 +1,9 @@
 package ir.arashjahani.nearplaces.data.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Location(
 	val cc: String? = null,
 	val country: String? = null,
@@ -10,4 +14,4 @@ data class Location(
 	val neighborhood: String? = null,
 	val state: String? = null,
 	val lat: Double? = null
-)
+): Parcelable

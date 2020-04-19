@@ -21,6 +21,7 @@ object AppConstants {
 
     const val KEY_LOCATION= "location"
     const val KEY_LAST_OFFSET= "last_offset"
+    const val KEY_VENUE="venue_item"
 
 
 
