@@ -1,30 +1,33 @@
 package ir.arashjahani.nearplaces.ui.venue.list
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DividerItemDecoration
-
 import ir.arashjahani.nearplaces.R
 import ir.arashjahani.nearplaces.data.model.Venue
 import ir.arashjahani.nearplaces.data.model.VenueWithCategoryItem
 import ir.arashjahani.nearplaces.ui.base.BaseFragment
+import ir.arashjahani.nearplaces.utils.AppConstants.PERMISSION_ID
+import ir.arashjahani.nearplaces.utils.isLocationEnabled
 import kotlinx.android.synthetic.main.fragment_venue_list.*
 import javax.inject.Inject
+
 
 /**
  * A simple [Fragment] subclass.
  */
-class VenueListFragment : BaseFragment(),VenuesAdapter.VenueAdapterItemClickListener{
+class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -55,6 +58,11 @@ class VenueListFragment : BaseFragment(),VenuesAdapter.VenueAdapterItemClickList
     }
 
     fun initObserves() {
+
+        mVenuesListViewModel.newlocation.observe(viewLifecycleOwner, Observer {
+            Log.v("Location Finder", it)
+        })
+
         mVenuesListViewModel.venueWithCategoryListLiveData.observe(
             viewLifecycleOwner,
             Observer<PagedList<VenueWithCategoryItem>> {
@@ -68,6 +76,9 @@ class VenueListFragment : BaseFragment(),VenuesAdapter.VenueAdapterItemClickList
     }
 
     fun prepareView() {
+
+
+        fab_detect_location.setOnClickListener { getLocation() }
 
         // add dividers between RecyclerView's row items
         val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
@@ -87,5 +98,24 @@ class VenueListFragment : BaseFragment(),VenuesAdapter.VenueAdapterItemClickList
     override fun onVenueItemClick(venueItem: Venue) {
 
     }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (requestCode == PERMISSION_ID) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                // Granted. Start getting the location information
+            }
+        }
+    }
+
+    fun getLocation() {
+
+        if (context?.isLocationEnabled()!!)
+            mVenuesListViewModel.trackLocation()
+        else
+            mVenuesListViewModel.locationFinderSetup()
+
+    }
+
+
 
 }

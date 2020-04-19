@@ -56,6 +56,9 @@ dependencies {
     //page
     implementation 'android.arch.paging:runtime:1.0.1'
 
+    //location
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+
     // navigation
     implementation "androidx.navigation:navigation-fragment:2.2.1"
     implementation "androidx.navigation:navigation-ui:2.2.1"

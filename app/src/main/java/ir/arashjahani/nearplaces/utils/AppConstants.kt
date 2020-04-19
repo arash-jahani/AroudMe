@@ -14,5 +14,10 @@ object AppConstants {
     const val PAGE_SIZE = 40
     const val RADIUS=1000
 
+    const val KEY_LOCATION= "location"
+
+    const val PERMISSION_ID=30004000
+
+
 
 }

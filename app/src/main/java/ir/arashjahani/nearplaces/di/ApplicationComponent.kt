@@ -7,10 +7,7 @@ import dagger.android.support.AndroidSupportInjectionModule
 import ir.arashjahani.nearplaces.MyApplication
 import ir.arashjahani.nearplaces.di.builder.ActivityBuilder
 import ir.arashjahani.nearplaces.di.builder.FragmentBuilder
-import ir.arashjahani.nearplaces.di.module.ApiModule
-import ir.arashjahani.nearplaces.di.module.ApplicationModule
-import ir.arashjahani.nearplaces.di.module.DatabaseModule
-import ir.arashjahani.nearplaces.di.module.ViewModelModule
+import ir.arashjahani.nearplaces.di.module.*
 import javax.inject.Singleton
 
 /**
@@ -26,7 +23,8 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         ActivityBuilder::class,
         FragmentBuilder::class,
-        ViewModelModule::class]
+        ViewModelModule::class,
+        SharedPreferenceModule::class]
 )
 interface ApplicationComponent {
 
