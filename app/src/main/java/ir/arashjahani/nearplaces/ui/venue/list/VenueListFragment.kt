@@ -75,10 +75,14 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
                 //save location
                 mVenuesListViewModel.saveLocation(it)
                 mVenuesListViewModel.updateLocationLiveData.value = it
-            }
-            if (mVenuesListViewModel.isLocationChanged(it)) {
+
+                lbl_address.text = it
+
+            } else if (mVenuesListViewModel.isLocationChanged(it)) {
                 mVenuesListViewModel.saveLocation(it)
                 lbl_new_place.visibility = View.VISIBLE
+
+                lbl_address.text = it
             }
 
         })
@@ -116,13 +120,13 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
 
     override fun onPause() {
         super.onPause()
-        Log.v("Location Finder:","onPause")
+        Log.v("Location Finder:", "onPause")
         mVenuesListViewModel.stopLocationTracker()
     }
 
     override fun onResume() {
         super.onResume()
-        Log.v("Location Finder:","restart")
+        Log.v("Location Finder:", "restart")
         getLocation()
     }
 

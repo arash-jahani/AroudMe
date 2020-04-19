@@ -1,12 +1,12 @@
 package ir.arashjahani.nearplaces.utils
 
-import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
-import androidx.core.app.ActivityCompat
+import java.util.*
 
 /**
  * Created By ArashJahani on 2020/04/18
