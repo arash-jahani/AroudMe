@@ -65,10 +65,13 @@ class VenueBoundaryCondition(
 
                     venues.response.groups[0].items?.let {
 
+                        if (it.isEmpty())
+                            return@let
+
                         mVenueDAO.insertAll(it)
 
                         isRequestInProgress = false
-                        lastRequestOffset += PAGE_SIZE;
+                        lastRequestOffset += it.size;
                         preferencesHelper.putInt(KEY_LAST_OFFSET, lastRequestOffset)
 
                     }

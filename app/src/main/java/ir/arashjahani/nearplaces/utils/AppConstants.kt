@@ -12,7 +12,7 @@ object AppConstants {
     const val VERSION="20200414"
 
     const val PAGE_SIZE:Int = 40
-    const val RADIUS:Int=500
+    const val RADIUS:Int=1000
 
     const val PERMISSION_ID=100
 
