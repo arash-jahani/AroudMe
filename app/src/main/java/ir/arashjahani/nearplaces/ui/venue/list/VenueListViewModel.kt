@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
+import androidx.room.Transaction
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -38,22 +39,12 @@ class VenueListViewModel @Inject constructor(
     val networkErrors: LiveData<String> =
         Transformations.switchMap(venueResultLiveData) { it -> it.networkErrors }
 
-
+    @Transaction
     fun clearPreviousVenuesThenSaveSomeNew() {
 
-        Single.fromCallable {
-            dataRepository.clearAllVenues()
-        }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                this.updateLocationLiveData.value = getLastSavedLocation()
+        dataRepository.clearAllVenues()
 
-            }, {
-
-            }
-            );
-
+        this.updateLocationLiveData.value = getLastSavedLocation()
 
     }
 
@@ -80,7 +71,7 @@ class VenueListViewModel @Inject constructor(
         return false
     }
 
-    fun stopLocationTracker(){
+    fun stopLocationTracker() {
         dataRepository.stopLocationTracked()
     }
 

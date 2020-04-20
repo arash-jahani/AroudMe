@@ -19,7 +19,11 @@ import ir.arashjahani.nearplaces.utils.AppConstants.PAGE_SIZE
 /**
  * Created By ArashJahani on 2020/04/18
  */
-class VenueBoundaryCondition(private val mApiService: ApiService, private val mVenueDAO: VenueDao,private val preferencesHelper: PreferencesHelper) :
+class VenueBoundaryCondition(
+    private val mApiService: ApiService,
+    private val mVenueDAO: VenueDao,
+    private val preferencesHelper: PreferencesHelper
+) :
     PagedList.BoundaryCallback<VenueWithCategoryItem>() {
 
     private val subscriptions = CompositeDisposable()
@@ -63,20 +67,20 @@ class VenueBoundaryCondition(private val mApiService: ApiService, private val mV
 
                         mVenueDAO.insertAll(it)
 
-                        if (it.size == PAGE_SIZE) {
-                            isRequestInProgress = false
-                            lastRequestOffset+=PAGE_SIZE;
-                            preferencesHelper.putInt(KEY_LAST_OFFSET,lastRequestOffset)
-                        }
+                        isRequestInProgress = false
+                        lastRequestOffset += PAGE_SIZE;
+                        preferencesHelper.putInt(KEY_LAST_OFFSET, lastRequestOffset)
+
                     }
 
                 }, { error ->
+                    _networkErrors.value = error.message ?: "Connection Error"
                     isRequestInProgress = false
                 })
         )
     }
 
-    fun freshRequest(loc:String){
+    fun freshRequest(loc: String) {
         location = loc
         isRequestInProgress = false
         lastRequestOffset = preferencesHelper.getInt(KEY_LAST_OFFSET)

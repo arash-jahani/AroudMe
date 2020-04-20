@@ -6,6 +6,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
+import java.lang.StringBuilder
 import java.util.*
 
 /**
@@ -38,5 +39,29 @@ fun String.toLocation(): Location? {
     location.longitude = locList.last().toDouble()
 
     return location
+}
+
+fun String.toAddress(context: Context): String {
+
+    val lat: Double = this.toLocation()?.latitude ?: 0.0
+    val lng: Double = this.toLocation()?.longitude ?: 0.0
+
+    val geocoder = Geocoder(context)
+    try {
+        val list = geocoder.getFromLocation(lat, lng, 1)
+        var address=StringBuilder()
+        address.append(list[0].featureName ?:"")
+        address.append(" ")
+        address.append(list[0].subAdminArea ?:"")
+        address.append(" ")
+        return list[0].getAddressLine(0)
+    } catch (ex: Exception) {
+        return this
+    }
+}
+
+
+fun Double.locationRound(): Double {
+    return Math.round(this * 100000.0) / 100000.0
 }
 

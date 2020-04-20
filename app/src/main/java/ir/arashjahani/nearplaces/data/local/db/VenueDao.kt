@@ -41,9 +41,11 @@ abstract class VenueDao {
     @Query("SELECT venue.*, category.* FROM venue INNER JOIN category ON venue.venue_id = category.venueId")
     abstract fun _loadVenues(): DataSource.Factory<Int, VenueWithCategoryItem>
 
+    @Transaction
     @Query("DELETE FROM venue")
     abstract fun clearAllVenue()
 
+    @Transaction
     @Query("DELETE FROM category")
     abstract fun clearAllCategory()
 }

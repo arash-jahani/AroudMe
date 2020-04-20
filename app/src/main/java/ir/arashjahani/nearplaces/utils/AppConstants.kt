@@ -11,13 +11,15 @@ object AppConstants {
 
     const val VERSION="20200414"
 
-    const val PAGE_SIZE = 40
-    const val RADIUS=10_0000
+    const val PAGE_SIZE:Int = 40
+    const val RADIUS:Int=500
 
     const val PERMISSION_ID=100
 
-    const val DISATANCE=100
+    const val DISATANCE:Int=250
 
+    const val LOCATION_INTERVAL:Long=1000 * 45 //set the interval in which you want to get locations.
+        const val LOCATION_FASTESTINTERVAL:Long=1000 * 30 //if a location is available sooner you can get it
 
     const val KEY_LOCATION= "location"
     const val KEY_LAST_OFFSET= "last_offset"

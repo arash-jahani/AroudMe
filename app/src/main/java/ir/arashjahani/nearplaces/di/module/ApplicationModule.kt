@@ -8,6 +8,8 @@ import dagger.Provides
 import ir.arashjahani.nearplaces.MyApplication
 import ir.arashjahani.nearplaces.data.DataRepository
 import ir.arashjahani.nearplaces.data.DataRepositoryImpl
+import ir.arashjahani.nearplaces.utils.AppConstants.LOCATION_FASTESTINTERVAL
+import ir.arashjahani.nearplaces.utils.AppConstants.LOCATION_INTERVAL
 import javax.inject.Singleton
 
 /**
@@ -33,8 +35,8 @@ class ApplicationModule {
     fun provideLocationRequest(): LocationRequest {
         var mLocationRequest = LocationRequest()
         mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        mLocationRequest.interval = 1000 * 10
-        mLocationRequest.fastestInterval = 1000 * 5
+        mLocationRequest.interval = LOCATION_INTERVAL
+        mLocationRequest.fastestInterval = LOCATION_FASTESTINTERVAL
         return mLocationRequest
     }
 

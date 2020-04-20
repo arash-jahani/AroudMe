@@ -27,6 +27,7 @@ import ir.arashjahani.nearplaces.utils.AppConstants.KEY_VENUE
 import ir.arashjahani.nearplaces.utils.AppConstants.PERMISSION_ID
 import ir.arashjahani.nearplaces.utils.checkLocationPermission
 import ir.arashjahani.nearplaces.utils.isLocationEnabled
+import ir.arashjahani.nearplaces.utils.toAddress
 import kotlinx.android.synthetic.main.fragment_venue_list.*
 import javax.inject.Inject
 
@@ -63,14 +64,23 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
 
         prepareView()
 
-        if (!mVenuesListViewModel.getLastSavedLocation().isEmpty()) {
-            mVenuesListViewModel.updateLocationLiveData.value =
-                mVenuesListViewModel.getLastSavedLocation()
+        val savedLocation = mVenuesListViewModel.getLastSavedLocation()
+
+        if (!savedLocation.isEmpty()) {
+
+            mVenuesListViewModel.updateLocationLiveData.value = savedLocation
+
+            updateAddress(savedLocation)
+
         }
         getLocation()
     }
 
     fun initObserves() {
+
+        mVenuesListViewModel.networkErrors.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context,it,Toast.LENGTH_SHORT).show()
+        })
 
         mVenuesListViewModel.trackLocation.observe(viewLifecycleOwner, Observer {
             Log.v("Location Finder", it)
@@ -79,13 +89,13 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
                 mVenuesListViewModel.saveLocation(it)
                 mVenuesListViewModel.updateLocationLiveData.value = it
 
-                lbl_address.text = it
+                updateAddress(it)
 
             } else if (mVenuesListViewModel.isLocationChanged(it)) {
                 mVenuesListViewModel.saveLocation(it)
                 lbl_new_place.visibility = View.VISIBLE
 
-                lbl_address.text = it
+                updateAddress(it)
             }
 
         })
@@ -100,6 +110,10 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
         mVenuesListViewModel.networkErrors.observe(viewLifecycleOwner, Observer<String> {
             Toast.makeText(context, "$it", Toast.LENGTH_LONG).show()
         })
+    }
+
+    fun updateAddress(location: String) {
+        lbl_address.text = context?.let { it1 -> location.toAddress(it1) }
     }
 
     fun prepareView() {

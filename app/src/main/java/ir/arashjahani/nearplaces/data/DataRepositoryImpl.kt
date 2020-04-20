@@ -14,6 +14,7 @@ import ir.arashjahani.nearplaces.data.utils.VenueBoundaryCondition
 import ir.arashjahani.nearplaces.utils.AppConstants.KEY_LAST_OFFSET
 import ir.arashjahani.nearplaces.utils.AppConstants.KEY_LOCATION
 import ir.arashjahani.nearplaces.utils.AppConstants.PAGE_SIZE
+import ir.arashjahani.nearplaces.utils.locationRound
 import javax.inject.Inject
 
 
@@ -71,7 +72,7 @@ class DataRepositoryImpl @Inject constructor(
         override fun onLocationResult(p0: LocationResult?) {
 
             var loc: String =
-                "${p0!!.lastLocation.latitude}, ${p0.lastLocation.longitude}"
+                "${p0!!.lastLocation.latitude.locationRound()}, ${p0.lastLocation.longitude.locationRound()}"
             Log.v("Location Finder:", "fetchLocation")
             newLocationLiveData.postValue(loc)
 
