@@ -53,7 +53,7 @@ class DataRepositoryImpl @Inject constructor(
     }
 
     override
-    fun fetchLocation() {
+    fun trackLocation() {
 
         if (this::fusedLocationProviderClient.isInitialized) {
             fusedLocationProviderClient?.removeLocationUpdates(mLocationCallback)

@@ -19,6 +19,10 @@ import ir.arashjahani.nearplaces.utils.AppConstants.PAGE_SIZE
 /**
  * Created By ArashJahani on 2020/04/18
  */
+
+/**
+ * this class provide venues pagination data automatically
+ */
 class VenueBoundaryCondition(
     private val mApiService: ApiService,
     private val mVenueDAO: VenueDao,

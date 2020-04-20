@@ -35,7 +35,7 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass.
  */
-class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickListener {
+class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickListener,VenueListNavigator {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -58,7 +58,7 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //mMoviesListViewModel.navigator = this //also need implement MoviesListNavigator
+        mVenuesListViewModel.navigator = this //also need implement MoviesListNavigator
 
         initObserves()
 
@@ -84,6 +84,7 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
 
         mVenuesListViewModel.trackLocation.observe(viewLifecycleOwner, Observer {
             Log.v("Location Finder", it)
+            switchToContentView()
             if (mVenuesListViewModel.getLastSavedLocation().isEmpty()) {
                 //save location
                 mVenuesListViewModel.saveLocation(it)
@@ -104,6 +105,7 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
             viewLifecycleOwner,
             Observer<PagedList<VenueWithCategoryItem>> {
                 Log.d("Activity", "Venues list: ${it?.size}")
+                switchToContentView()
                 mVenuesAdapter.submitList(it)
             })
 
@@ -183,5 +185,23 @@ class VenueListFragment : BaseFragment(), VenuesAdapter.VenueAdapterItemClickLis
             )
 
         }
+    }
+
+    override fun switchToLoadingView() {
+        progress_loading.visibility=View.VISIBLE
+    }
+
+    override fun switchToErrorView() {
+    }
+
+    override fun switchToEmptyView() {
+    }
+
+    override fun switchToContentView() {
+        progress_loading.visibility=View.INVISIBLE
+
+    }
+
+    override fun showToast(message: Int, tr: Throwable?) {
     }
 }

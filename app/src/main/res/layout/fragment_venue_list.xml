@@ -40,7 +40,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_venues"
         android:layout_width="match_parent"
@@ -50,6 +49,13 @@
         tools:listitem="@layout/item_venue"
         android:background="#dddddd"/>
 
+    <ProgressBar
+        android:id="@+id/progress_loading"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_gravity="center"
+        />
 
     <TextView
         android:id="@+id/lbl_new_place"

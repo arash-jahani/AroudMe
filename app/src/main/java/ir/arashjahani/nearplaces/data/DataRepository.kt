@@ -11,7 +11,7 @@ interface DataRepository {
 
     public fun getNearestVenues(location:String): VenueListResult
 
-    public fun fetchLocation()
+    public fun trackLocation()
 
     public fun getLiveLocation(): MutableLiveData<String>
 

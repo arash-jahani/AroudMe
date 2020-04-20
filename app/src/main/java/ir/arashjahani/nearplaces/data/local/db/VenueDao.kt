@@ -13,6 +13,12 @@ import ir.arashjahani.nearplaces.data.model.api.VenueItem
 @Dao
 abstract class VenueDao {
 
+    /**
+     * insert (array of object) of model is not possible,
+     * so this code insert venue category one by one
+     * after that insert all venues
+     *
+     */
     public fun insertAll(venueItems: List<VenueItem>) {
         var venues: ArrayList<Venue> = ArrayList<Venue>();
         venueItems.forEach { venueItem: VenueItem ->
